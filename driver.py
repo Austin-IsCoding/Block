@@ -15,10 +15,10 @@ canvas = screen.getcanvas()
 tk = canvas.winfo_toplevel()
 tk.attributes('-fullscreen', True)
 
-screen.title("Python Turtle on Replit")
+screen.title("Block")
 screen.setup(1.0, 1.0)
 
-print("Python turtle on Replit")
+print("Loading, please wait...")
 modules = []
 for path in args.files:
 	spec = importlib.util.spec_from_file_location(path.stem, path)

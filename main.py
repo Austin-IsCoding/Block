@@ -10,6 +10,7 @@ xpos = 0
 ypos = 0
 rp = randint(-180,180)
 hp = 5
+e_hp = 2
 
 def rs(input):
   turtle.register_shape(input)
@@ -18,6 +19,9 @@ def clearconsole():
     if os.name in ('nt', 'dos'):
         command = 'cls'
     os.system(command)
+def attack(__innit__,__call__):
+  global e_hp
+  e_hp -= 1
 def a_up():
   global ypos
   ypos += 15
@@ -50,6 +54,8 @@ a = turtle.Turtle()
 h = turtle.Turtle()
 h.shape("hp5.gif")
 h.penup()
+enemy.penup()
+enemy.goto(185,-170)
 h.goto(-185,170)
 a.shape("square")
 scr = turtle.Turtle()
@@ -72,22 +78,26 @@ clearconsole()
 #Game Loop
 running = True
 while running:
-  #HP
-  if hp == 5:
-    h.shape("hp5.gif")
-  elif hp == 4:
-    h.shape("hp4.gif")
-  elif hp == 3:
-    h.shape("hp3.gif")
-  elif hp == 2:
-    h.shape("hp2.gif")
-  elif hp == 1:
-    h.shape("hp1.gif")
-  elif hp <= 0:
+  clearconsole()
+  print("ENEMY:")
+  print(enemy.pos())
+  print("hp:")
+  print(e_hp)
+  print("")
+  print("PLAYER:")
+  print(a.pos())
+  print("hp:")
+  print(hp)
+  print("-----------------")
+  h.shape("hp{0}.gif".format(hp))
+  if hp == 0:
+    print("hp == 0")
+    time.sleep(0.75)
     running = False
   
-  #Positions
-  """a.goto(xpos,ypos)"""
+  #Attack
+  if enemy.pos() == a.pos():
+    enemy.onclick(attack)
 
   #Player A Keyboard Events
   S.onclick(a.goto)
@@ -96,24 +106,20 @@ while running:
   turtle.onkey(a_down, "s")
   turtle.onkey(a_right, "d")"""
 
-  #Enemy AI
-  if rp > 140:
-    rp = randint(-180,180)
-    enemy.seth(rp)
-    enemy.forward(20)
-
-  #Boundaries
+  #Damage
   if rp > 140:
     enemy.shape("wolfoxopen.gif")
     enemy.left(50)
     enemy.shape("wolfoxbite.gif")
-    enemy.left(randint(1,1000))
+    enemy.left(randint(1,500))
+    if enemy.pos() == a.pos():
+      hp -= 1
+    enemy.left(randint(1,500))
     enemy.shape("wolfoxopen.gif")
     enemy.left(50)
     enemy.shape("wolfox.gif")
-    if enemy.pos() == a.pos():
-      hp -= 1
-  if randint(1,100) == 1:
+    time.sleep(0.5)
+  if randint(1,100) <= 20:
     enemy.goto(a.pos())
 
   #Random Percentage
